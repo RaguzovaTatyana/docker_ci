@@ -62,6 +62,7 @@ RUN apt-get update; \
     rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --no-cache-dir numpy==1.23.1
+RUN python3 -m pip list
 
 ARG OPENCV_BRANCH="377be68d923e40900ac5526242bcf221e3f355e5" # 4.8 with a fix for building tests
 WORKDIR /opt/repo
@@ -155,6 +156,7 @@ RUN . "${INTEL_OPENVINO_DIR}"/setupvars.sh; \
 
 WORKDIR /opt/repo/opencv/build/install
 CMD ["/bin/bash"]
+RUN python3 -m pip list
 # -------------------------------------------------------------------------------------------------
 {% endif %}
 

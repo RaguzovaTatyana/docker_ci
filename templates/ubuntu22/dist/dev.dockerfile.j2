@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends cmake make git 
         ${PYTHON_VER} -m pip install --no-cache-dir --pre openvino_dev[caffe,kaldi,mxnet,onnx,pytorch,tensorflow2]=="$OPENVINO_WHEELS_VERSION" --trusted-host=* --find-links "$OPENVINO_WHEELS_URL" --extra-index-url https://download.pytorch.org/whl/cpu; \
     fi
 
+RUN ${PYTHON_VER} -m pip list \
+
 WORKDIR ${INTEL_OPENVINO_DIR}/licensing
 # Please use `third-party-programs-docker-dev.txt` short path to 3d party file if you use the Dockerfile directly from docker_ci/dockerfiles repo folder
 COPY dockerfiles/{{os}}/third-party-programs-docker-dev.txt ${INTEL_OPENVINO_DIR}/licensing
@@ -36,3 +38,5 @@ RUN git clone https://github.com/openvinotoolkit/open_model_zoo && \
     pip3 --no-cache-dir install open_model_zoo/demos/common/python/ && \
     rm -Rf open_model_zoo && \
     python3 -c "from model_zoo import model_api"
+
+RUN python3 -m pip list
