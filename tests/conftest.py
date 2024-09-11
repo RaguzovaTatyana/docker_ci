@@ -54,6 +54,18 @@ def pytest_configure(config):
         'markers', 'gpu: run tests on GPU device',
     )
     config.addinivalue_line(
+        'markers', 'linux: run tests on linux',
+    )
+    config.addinivalue_line(
+        'markers', 'windows: run tests on windows',
+    )
+    config.addinivalue_line(
+        'markers', 'dev: run tests for dev image',
+    )
+    config.addinivalue_line(
+        'markers', 'runtime: run test for runtime image',
+    )
+    config.addinivalue_line(
         'markers', 'save_deps: run test to save PyPi dependencies',
     )
     config.addinivalue_line(
@@ -450,7 +462,7 @@ def _is_distribution(request):
     image_dist = request.config.getoption('--distribution')
     if not any(x in image_dist for x in settings):
         pytest.skip(f'Test requires the product distribution should be {request.param} but get {image_dist}')
-
+  
 
 @pytest.fixture(scope='session')
 def _is_not_distribution(request):
@@ -551,7 +563,21 @@ def pytest_runtest_setup(item):
                 wsl = shutil.which('wsl')
                 if not wsl:
                     pytest.skip('Test requires Intel GPU device and configured WSL2 on the host machine')
+        if 'linux' in mark.name:
+            if sys.platform.startswith('win'):
+                pytest.skip('Test for linux only')
 
+        if 'windows' in mark.name:
+            if sys.platform.startswith('linux'):
+                pytest.skip('Test for windows only')
+
+        if 'runtime' in mark.name:
+            if 'runtime' not in item.config.getoption('--distribution'):
+                pytest.skip('Test for runtime distribution only')
+
+        if 'dev' in mark.name:
+            if 'dev' not in item.config.getoption('--distribution'):
+                pytest.skip('Test for dev distribution only')
         is_save_key = 'save' in item.config.known_args_namespace.keyword
         is_deps_key = 'deps' in item.config.known_args_namespace.keyword
         if 'save_deps' in mark.name and not (is_save_key or is_deps_key):

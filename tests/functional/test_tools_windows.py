@@ -4,10 +4,9 @@
 import pytest
 
 
-@pytest.mark.usefixtures('_is_image_os', '_is_distribution')
-@pytest.mark.parametrize('_is_image_os', [('winserver2019', 'windows20h2')], indirect=True)
+@pytest.mark.windows
 class TestToolsWindows:
-    @pytest.mark.parametrize('_is_distribution', [('dev')], indirect=True)
+    @pytest.mark.dev
     def test_accuracy_checker(self, tester, image):
         kwargs = {'user': 'ContainerAdministrator'}
         tester.test_docker_image(
@@ -16,7 +15,7 @@ class TestToolsWindows:
             self.test_accuracy_checker.__name__, **kwargs,
         )
 
-    @pytest.mark.parametrize('_is_distribution', [('dev')], indirect=True)
+    @pytest.mark.dev
     def test_benchmark(self, tester, image):
         kwargs = {'user': 'ContainerAdministrator'}
         tester.test_docker_image(
@@ -25,7 +24,8 @@ class TestToolsWindows:
             self.test_benchmark.__name__, **kwargs,
         )
 
-    @pytest.mark.parametrize('_is_distribution', [('runtime', 'dev')], indirect=True)
+    @pytest.mark.dev
+    @pytest.mark.runtime
     def test_compile_tool(self, tester, image):
         kwargs = {'user': 'ContainerAdministrator'}
         tester.test_docker_image(
@@ -36,7 +36,7 @@ class TestToolsWindows:
             self.test_compile_tool.__name__, **kwargs,
         )
 
-    @pytest.mark.parametrize('_is_distribution', [('dev')], indirect=True)
+    @pytest.mark.dev
     def test_deployment_manager(self, tester, image):
         kwargs = {'user': 'ContainerAdministrator'}
         tester.test_docker_image(
@@ -47,7 +47,7 @@ class TestToolsWindows:
             self.test_deployment_manager.__name__, **kwargs,
         )
 
-    @pytest.mark.parametrize('_is_distribution', [('dev')], indirect=True)
+    @pytest.mark.dev
     def test_mo(self, tester, image, bash):
         kwargs = {'user': 'ContainerAdministrator'}
         tester.test_docker_image(
@@ -56,7 +56,7 @@ class TestToolsWindows:
             self.test_mo.__name__, **kwargs,
         )
 
-    @pytest.mark.parametrize('_is_distribution', [('dev')], indirect=True)
+    @pytest.mark.dev
     def test_omz(self, tester, image, bash):
         kwargs = {'user': 'ContainerAdministrator'}
         tester.test_docker_image(
@@ -70,7 +70,7 @@ class TestToolsWindows:
             self.test_omz.__name__, **kwargs,
         )
 
-    @pytest.mark.parametrize('_is_distribution', [('dev')], indirect=True)
+    @pytest.mark.dev
     def test_pot(self, tester, image):
         kwargs = {'user': 'ContainerAdministrator'}
         tester.test_docker_image(

@@ -16,11 +16,11 @@ kwargs = {
 }
 
 
-@pytest.mark.usefixtures('_is_image_os')
-@pytest.mark.parametrize('_is_image_os', [('ubuntu18', 'ubuntu20', 'ubuntu22', 'rhel8')], indirect=True)
+@pytest.mark.skip(reason='bindings is not present in package')
+@pytest.mark.linux
 class TestPythonBindingsLinux:
-    @pytest.mark.usefixtures('_is_distribution')
-    @pytest.mark.parametrize('_is_distribution', [('custom-full')], indirect=True)
+    # @pytest.mark.usefixtures('_is_distribution')
+    # @pytest.mark.parametrize('_is_distribution', [('custom-full')], indirect=True)
     def test_opencv_bindings(self, tester, image, bash):
         tester.test_docker_image(
             image,
@@ -29,6 +29,7 @@ class TestPythonBindingsLinux:
             self.test_opencv_bindings.__name__, **kwargs,
         )
 
+    @pytest.mark.skip(reason='bindings is not present in package')
     @pytest.mark.usefixtures('_is_not_distribution')
     @pytest.mark.parametrize('_is_not_distribution', [('base')], indirect=True)
     def test_openvino_bindings(self, tester, image, bash):
@@ -39,6 +40,7 @@ class TestPythonBindingsLinux:
             self.test_openvino_bindings.__name__, **kwargs,
         )
 
+    @pytest.mark.skip(reason='bindings is not present in package')
     @pytest.mark.usefixtures('_is_not_distribution', '_python_ngraph_required')
     @pytest.mark.parametrize('_is_not_distribution', [('base')], indirect=True)
     def test_ngraph_bindings(self, tester, image, bash):

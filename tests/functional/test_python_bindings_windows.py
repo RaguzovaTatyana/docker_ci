@@ -16,8 +16,7 @@ kwargs = {
 }
 
 
-@pytest.mark.usefixtures('_is_image_os')
-@pytest.mark.parametrize('_is_image_os', [('winserver2019', 'windows20h2')], indirect=True)
+@pytest.mark.windows
 class TestPythonBindingsWindows:
     def test_openvino_bindings(self, tester, image):
         tester.test_docker_image(

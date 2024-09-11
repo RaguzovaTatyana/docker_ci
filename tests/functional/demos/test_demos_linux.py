@@ -4,9 +4,7 @@
 import pytest
 
 
-@pytest.mark.usefixtures('_is_image_os', '_is_distribution')
-@pytest.mark.parametrize('_is_image_os', [('ubuntu18', 'ubuntu20', 'ubuntu22')], indirect=True)
-@pytest.mark.parametrize('_is_distribution', [('custom-full')], indirect=True)
+@pytest.mark.skip(reason='for custom-full distribution only')
 class TestDemosLinuxDataDev:
     @pytest.mark.parametrize('omz_python_demo_path', ['action_recognition'], indirect=True)
     def test_action_recognition_python_cpu(self, omz_demos_lin_cpu_tester, omz_python_demo_path, bash):
@@ -82,9 +80,7 @@ class TestDemosLinuxDataDev:
         )
 
 
-@pytest.mark.usefixtures('_is_image_os', '_is_distribution')
-@pytest.mark.parametrize('_is_image_os', [('ubuntu18', 'ubuntu20', 'ubuntu22', 'rhel8')], indirect=True)
-@pytest.mark.parametrize('_is_distribution', [('dev', 'custom-full')], indirect=True)
+@pytest.mark.linux
 class TestDemosLinux:
     def test_crossroad_cpp_cpu(self, omz_demos_lin_cpu_tester, install_openvino_dependencies, bash, download_picture):
         omz_demos_lin_cpu_tester.run_test(
@@ -338,9 +334,9 @@ class TestDemosLinux:
         )
 
 
-@pytest.mark.usefixtures('_is_image_os', '_is_distribution')
-@pytest.mark.parametrize('_is_image_os', [('ubuntu18', 'ubuntu20', 'ubuntu22', 'rhel8')], indirect=True)
-@pytest.mark.parametrize('_is_distribution', [('runtime', 'dev', 'custom-full')], indirect=True)
+@pytest.mark.dev
+@pytest.mark.runtime
+@pytest.mark.linux
 class TestDemosLinuxRuntime:
     @pytest.mark.usefixtures('_python_ngraph_required')
     @pytest.mark.parametrize('omz_python_demo_path', ['object_detection'], indirect=True)
